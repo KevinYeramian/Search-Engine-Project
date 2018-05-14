@@ -1,8 +1,30 @@
 package Engine;
 
-import java.io.*;
-import java.nio.charset.*;
-import org.json.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class DataParser {
 	
@@ -20,9 +42,15 @@ public class DataParser {
 		
 		String path = args[0];
 		
+		File fResult = new File("data_" + sizeOption + ".json");
+		if (fResult.exists()) {
+			System.err.println("The file already exists.");
+			return;
+		}
+		
 		File fQuestions = new File(path, "questions_" + sizeOption + ".txt");
 		File fAnswers = new File(path, "answers_" + sizeOption + ".txt");
-		File fResult = new File("data_" + sizeOption + ".json");
+		
 		InputStreamReader questionsReader;
 		InputStreamReader answersReader;
 		OutputStreamWriter resultWriter;
@@ -43,6 +71,12 @@ public class DataParser {
 			String questionLine;
 			String answerLine = answersBufferedReader.readLine();
 			while ((questionLine = questionsBufferedReader.readLine()) != null) {
+				
+				JSONObject indexRow = new JSONObject();
+				indexRow.put("index", new JSONObject()
+							.put("_index", "chatbot_index")
+							.put("_type", "question_answer"));
+				resultBufferedWriter.write(indexRow.toString() + "\n");
 				
 				String[] questionLineParts = questionLine.split(" ");
 				int questionNumber = Integer.parseInt(questionLineParts[0]);
@@ -68,7 +102,6 @@ public class DataParser {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			return;
 		}
 		
 		try {
@@ -87,6 +120,49 @@ public class DataParser {
 			resultBufferedWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+		
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		
+		// Creating an index with a tokenizer
+		try {
+		    HttpPut request = new HttpPut("http://localhost:9200/chatbot_index");
+		    request.addHeader("content-type", "application/json");
+		    JSONObject body = new JSONObject()
+		    	.put("settings", new JSONObject()
+		    		.put("analysis", new JSONObject()
+		    			.put("analyzer", new JSONObject()
+		    				.put("my_analyzer", new JSONObject()
+		    					.put("tokenizer", "url_email_tokenizer")))
+		    			.put("tokenizer", new JSONObject()
+		    				.put("url_email_tokenizer", new JSONObject()
+		    					.put("type", "uax_url_email")))
+		    		));
+		    StringEntity params = new StringEntity(body.toString());
+		    request.setEntity(params);
+		    httpClient.execute(request);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		// Indexing
+		try {
+
+		    HttpPost request = new HttpPost("http://localhost:9200/_bulk");
+		    request.addHeader("content-type", "application/json");
+		    InputStream is = new FileInputStream(fResult);
+		    BufferedHttpEntity params = new BufferedHttpEntity(new InputStreamEntity(new BufferedInputStream(is)));
+		    request.setEntity(params);
+		    
+		    HttpResponse response = httpClient.execute(request);
+		    HttpEntity entity = response.getEntity();
+            if (entity != null) {
+            	System.out.println(EntityUtils.toString(entity));
+            }
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 		
 	}
