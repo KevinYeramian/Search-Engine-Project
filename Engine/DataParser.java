@@ -26,6 +26,16 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * @author Dmitry Siniukov
+ *
+ * Launch the project with this as the main class to preprocess the dataset.
+ * Arguments:
+ * 	1. A path to the data folder
+ * 	2. An integer number of the dataset's size: 1000, 10,000, or 100,000. (optional)
+ * 
+ * Result: a json-file of the correct format stored in the root folder of the project.
+ */
 public class DataParser {
 	
 	public static void main( String[] args ) {

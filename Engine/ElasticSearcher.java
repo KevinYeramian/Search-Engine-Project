@@ -13,6 +13,13 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * 
+ * @author d1mas
+ *
+ * An implementation of <code>ElasticSearchInterface</code>
+ *
+ */
 public class ElasticSearcher implements ElasticSearchInterface {
 	
 	private static HttpClient httpClient;
@@ -24,9 +31,14 @@ public class ElasticSearcher implements ElasticSearchInterface {
 		return httpClient;
 	}
 	
-	
+	/**
+	 * Arguments:
+	 * 	<code>query</code>:			the query
+	 * 	<code>answersWeight</code>:	priority of answers in a search (typically ~0.1)
+	 * 	<code>size</code>			maximum number of results to be returned
+	 */
 	@Override
-	public ArrayList<QuestionAnswer> search(Query q, double answersWeight, int size) {
+	public ArrayList<QuestionAnswer> search(Query query, double answersWeight, int size) {
 		
 		ArrayList<QuestionAnswer> result = new ArrayList<QuestionAnswer>();
 		
@@ -35,7 +47,7 @@ public class ElasticSearcher implements ElasticSearchInterface {
 		    request.addHeader("content-type", "application/json");
 		    
 		    JSONArray shouldList = new JSONArray();
-		    for (Query.QueryTerm qt : q.queryterm) {
+		    for (Query.QueryTerm qt : query.queryterm) {
 		    	
 		    	shouldList.put(new JSONObject()
 		    		.put("match", new JSONObject()
