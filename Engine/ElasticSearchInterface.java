@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 public interface ElasticSearchInterface {
 	
-	public ArrayList<QuestionAnswer>search(Query q);
+	public ArrayList<QuestionAnswer> search(Query q, double answersWeight, int size);
 	
 }

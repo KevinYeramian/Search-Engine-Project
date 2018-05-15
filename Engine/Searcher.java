@@ -12,7 +12,11 @@ import Engine.Query.QueryTerm;
 
 
 public class Searcher {
-
+	
+	final double SEARCH_ANSWERS_WEIGHT = 0.1;
+	
+	final int SEARCH_MAX_SIZE = 10;
+	
     /** The index to be searched by this Searcher. */
 	Word2VecInterface word2vect;
 
@@ -34,7 +38,7 @@ public class Searcher {
 	    	   }
 	    	   query.add(synonymList);
 	    	   
-	       return score(esi.search(query),query);
+	       return score(esi.search(query, SEARCH_ANSWERS_WEIGHT, SEARCH_MAX_SIZE),query);
     	   }
     	   return null;
     }

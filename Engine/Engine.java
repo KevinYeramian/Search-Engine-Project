@@ -48,7 +48,7 @@ public class Engine {
      *   Indexes all chosen directories and files
      */
     public Engine( String[] args ) {
-    		esi = null;
+    		esi = new ElasticSearcher();
 	    	Word2VecInterface word2vect = null;
 	    	searcher = new Searcher(word2vect);
 	    	gui = new SearchGUI( this, esi );
