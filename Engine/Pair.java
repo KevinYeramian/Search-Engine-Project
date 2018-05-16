@@ -7,5 +7,7 @@ public class Pair {
 		this.value = value;
 		this.key = key;
 	}
-
+	public String toString() {
+		return key + " " + value;
+	}
 }

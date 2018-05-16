@@ -49,7 +49,7 @@ public class Engine {
      */
     public Engine( String[] args ) {
     		esi = new ElasticSearcher();
-	    	Word2VecInterface word2vect = null;
+	    	Word2VecInterface word2vect = new w2vImporter();
 	    	searcher = new Searcher(word2vect);
 	    	gui = new SearchGUI( this, esi );
 	    	gui.init();

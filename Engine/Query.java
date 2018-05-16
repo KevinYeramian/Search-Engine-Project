@@ -132,16 +132,5 @@ public class Query {
 	    	}
     }
    
-    /**
-     *  Expands the Query using Relevance Feedback
-     *
-     *  @param results The results of the previous query.
-     *  @param docIsRelevant A boolean array representing which query results the user deemed relevant.
-     *  @param engine The search engine object
-     */
-    /*public void relevanceFeedback( PostingsList results, boolean[] docIsRelevant, Engine engine ) {
-	//
-	//  YOUR CODE HERE
-	//
-    }*/
+
 }

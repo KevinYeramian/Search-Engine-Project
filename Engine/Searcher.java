@@ -29,7 +29,7 @@ public class Searcher {
      *  Searches the index for postings matching the query.
      *  @return A postings list representing the result of the query.
      */
-    public QuestionAnswer search( Query query, QueryType queryType, RankingType rankingType, ElasticSearchInterface esi ) {
+    public ArrayList<QuestionAnswer> search( Query query, QueryType queryType, RankingType rankingType, ElasticSearchInterface esi ) {
     	   if(esi != null) {
 	    	   Pair pair;
 	    	   ArrayList<Pair> synonymList = new ArrayList<Pair>();
@@ -42,10 +42,52 @@ public class Searcher {
     	   }
     	   return null;
     }
+    public ArrayList<String> kGram(String s){
+    	ArrayList<String> kGramTerm = new ArrayList<String>();
+    	String aux;
+    	for(int i = 0; i < s.length() -  3;i++) {
+    		aux = s.substring(i,i + 3);
+    		if(!kGramTerm.contains(aux)) {
+    			kGramTerm.add(aux);
+    		}
+    	}
+    	return kGramTerm;
+    }
     
-    public QuestionAnswer score(ArrayList<QuestionAnswer> qa, Query query) {
-    		
-		return qa.get(0);
+    public ArrayList<QuestionAnswer> score(ArrayList<QuestionAnswer> qaList, Query query) {
+    	
+    	
+    	ArrayList<Pair> queryKgram = new ArrayList<Pair>();
+    	ArrayList<String> queryString = new ArrayList<String>();
+    	ArrayList<QuestionAnswer> output = new ArrayList<QuestionAnswer>();
+    	ArrayList<Pair> answerKgram = new ArrayList<Pair>();
+    	ArrayList<String> answerString = new ArrayList<String>();
+    	
+    	for(QueryTerm queryterm : query.queryterm) {
+    		ArrayList<String> kGramTerm = kGram(queryterm.term);
+    		for(String kgram : kGramTerm) {
+    			if(!queryString.contains(kgram)) {
+    				queryKgram.add(new Pair(kgram,queryterm.weight));
+    				queryString.add(kgram);
+    			}
+    		}
+ 	   	}
+    	for(QuestionAnswer qa : qaList) {
+    		answerKgram.clear();
+    		answerString.clear();
+    		for(SearchEntry se: qa.answer) {
+    			ArrayList<String> kGramTerm = kGram(se.text);
+    			for(String kgram : kGramTerm) {
+        			if(!queryString.contains(kgram)) {
+        				answerKgram.add(new Pair(kgram,se.rank));
+        				answerString.add(kgram);
+        			}
+        		}
+    		}
+    	}
+    	
+    	
+		return output;
     	
     }
 }

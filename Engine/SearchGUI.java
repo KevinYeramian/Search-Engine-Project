@@ -27,7 +27,7 @@ public class SearchGUI extends JFrame {
     private Query query;
 
     /**  The results of a search query. */
-    
+    ArrayList<QuestionAnswer> results;
 
     /**  The query type (either intersection, phrase, or ranked). */
     QueryType queryType = QueryType.QUESTION;
@@ -144,7 +144,7 @@ public class SearchGUI extends JFrame {
                     }
                     //query.relevanceFeedback( results, relevant, engine );
                 }
-                QuestionAnswer results;
+                
                 // Search and print results. Access to the index is synchronized since
                 // we don't want to search at the same time we're indexing new files
                 // (this might corrupt the index).
@@ -160,7 +160,8 @@ public class SearchGUI extends JFrame {
                 // might take a long time, if there are many results.
                 
                 if ( results != null ) {
-                    displayResults( MAX_RESULTS, elapsedTime/1000.0 );
+                	//System.out.print(results);
+                    displayResults( MAX_RESULTS, elapsedTime/1000.0);
                 } else {
                     displayInfoText( "Found 0 matching document(s)" );
                 }
@@ -221,15 +222,15 @@ public class SearchGUI extends JFrame {
      *      have been displayed.
      *  @param elapsedTime Shows how long time it took to compute the results.
      */
-    void displayResults( int maxResultsToDisplay, double elapsedTime ) {
-        ArrayList<Integer> results = null;
+    void displayResults( int maxResultsToDisplay, double elapsedTime) {
+        
 		displayInfoText( String.format( "Found %d matching document(s) in %.3f seconds", results.size(), elapsedTime ));
         box = new JCheckBox[maxResultsToDisplay];
         int i;
         for ( i=0; i<results.size() && i<maxResultsToDisplay; i++ ) {
-            String description = i + ". ";
+            String description = i + " " + results.get(i).question.text;
             if ( queryType == QueryType.QUESTION ) {
-                description += "   " + String.format( "%.5f", i );
+                description += "   " + String.format( "%.5f", 0.0 );
             }
             box[i] = new JCheckBox();
             box[i].setSelected( false );
@@ -243,23 +244,10 @@ public class SearchGUI extends JFrame {
 
             MouseAdapter showDocument = new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    String fileName = ((JLabel)e.getSource()).getText().split(" ")[1];
+                    String fileName = ((JLabel)e.getSource()).getText().split(" ")[0];
                     String contents = "Displaying contents of " + fileName + "\n" + MARKER + "\n";
                     String line;
-                    for (int j = 0, sz = engine.dirNames.size(); j < sz; j++) {
-                        File file = new File(engine.dirNames.get(j), fileName);
-                        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                            while ((line = br.readLine()) != null) {
-                                contents += line.trim() + "\n";
-                            }
-                        } catch (FileNotFoundException exc) {
-                            contents += "\n   No file found";
-                        } catch (IOException exc) {
-                            contents += "\n   IOException";
-                        } catch (NullPointerException exc) {
-                            contents += "\n   NullPointerException";
-                        }
-                    }
+                    contents += results.get(Integer.parseInt(fileName)).toString();
                     docTextView.setText(contents);
                     docTextView.setCaretPosition(0);
                 }

@@ -1,3 +1,5 @@
+package Engine;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -25,7 +27,7 @@ import java.util.*;
  *
  * @author Pontus
  */
-public class w2vImporter {
+public class w2vImporter implements Word2VecInterface {
     File vectors;
     File hs;
     File h_codes;
@@ -34,11 +36,13 @@ public class w2vImporter {
     String JsonString = "{\"allowParallelTokenization\":true,\"batchSize\":512,\"elementsLearningAlgorithm\":null,\"epochs\":1,\"hugeModelExpected\":false,\"iterations\":1,\"layersSize\":100,\"learningRate\":0.025,\"learningRateDecayWords\":0,\"minLearningRate\":1.0E-4,\"minWordFrequency\":5,\"modelUtils\":\"org.deeplearning4j.models.embeddings.reader.impl.BasicModelUtils\",\"negative\":0.0,\"ngram\":0,\"preciseWeightInit\":false,\"sampling\":0.0,\"scavengerActivationThreshold\":2000000,\"scavengerRetentionDelay\":3,\"seed\":42,\"sequenceLearningAlgorithm\":null,\"stop\":\"STOP\",\"stopList\":[],\"tokenPreProcessor\":null,\"tokenizerFactory\":\"org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory\",\"trainElementsVectors\":true,\"trainSequenceVectors\":true,\"unk\":\"UNK\",\"useAdaGrad\":false,\"useHierarchicSoftmax\":true,\"useUnknown\":false,\"variableWindows\":null,\"vocabSize\":0,\"window\":5}";
     public w2vImporter(){
         // config this manually 
-    this.vectors = new File("C:\\Users\\Pontus\\Desktop\\dummymodel\\syn0.txt");//text file with words and their wieghts, aka Syn0
-    this.hs = new File("C:\\Users\\Pontus\\Desktop\\dummymodel\\syn1.txt");//text file HS layers, aka Syn1
-    this.h_codes = new File("C:\\Users\\Pontus\\Desktop\\dummymodel\\codes.txt");// text file with Huffman tree codes
-    this.h_points = new File("C:\\Users\\Pontus\\Desktop\\dummymodel\\huffman.txt");// text file with Huffman tree points
-    
+    	
+	    String path = "/Users/yeramiankevin/Desktop/KTH/Search_Engines_and_Information_Retrieval_Systems/final-project/IR-project/w2v";
+	    this.vectors = new File( path + "/syn0.txt");//text file with words and their wieghts, aka Syn0
+	    this.hs = new File( path + "/syn1.txt");//text file HS layers, aka Syn1
+	    this.h_codes = new File(path + "/codes.txt");// text file with Huffman tree codes
+	    this.h_points = new File(path + "/huffman.txt");// text file with Huffman tree points
+	    this.initw2v();
     }
     public void initw2v(){
         
@@ -46,11 +50,11 @@ public class w2vImporter {
     try{
         this.word2Vec =  WordVectorSerializer.readWord2VecFromText(vectors,hs,h_codes,h_points, new VectorsConfiguration().fromJson(JsonString));
                                            
-                                            
-    }
-    catch(Exception e){
-    e.printStackTrace();
-    }
+        
+	    }
+	    catch(Exception e){
+	    e.printStackTrace();
+	    }
     
     }
     public String translate2W2v(String token){
@@ -58,7 +62,7 @@ public class w2vImporter {
         toReturn = toReturn.replaceAll("ä","eae");
         toReturn = toReturn.replaceAll("ö","eoe");
         System.out.println("2 w2v, from "+ token + " to " +toReturn );
-        return "toBeImplemented";
+        return toReturn;
     }
     
     public String translate2Query(String token){
@@ -68,7 +72,7 @@ public class w2vImporter {
         System.out.println("2 query, from "+ token + " to " +toReturn );
         return toReturn;
     }
-    public Collection<String> getNearestWords(String token){
+    public ArrayList<Pair> synonym(String token){
         double threshold = 0.9;//change if you want
         int numberOfWords = 20;//change if you want 
         //needs to deal with åäö
@@ -76,38 +80,33 @@ public class w2vImporter {
         
         
         Collection<String> words =  this.word2Vec.wordsNearest(tokenBuffer, numberOfWords);
-        Collection<String> results = new ArrayList<String>();
+        ArrayList<Pair> results = new ArrayList<Pair>();
         
         //debugging.
         boolean debugging = true;
-        if(debugging){
-            words.add("term");
-            words.add("teaest");
-            words.add("kyckling");
-            words.add("baaathus");
-            words.add("cheoeklad");
-        }
+        
         for(String word : words){
             double sim = this.word2Vec.similarity(word, tokenBuffer);
             if(sim >= threshold || debugging){
                 //needs to deal with åäö
                 String translated = translate2Query(word);
-                results.add(translated);
+                results.add(new Pair(translated, sim));
             }
         }
         
         return results;
     }
+    /*
     public static void main(String[] args) {
         //call these 2 functions to init. in this order
         w2vImporter n = new w2vImporter();
-        n.initw2v();
+        //n.initw2v();
         
         //use this to get words closest to your token, returns a Collection<String>
-        System.out.println(n.getNearestWords("du"));
-        System.out.println(n.getNearestWords("dö"));
-        System.out.println(n.getNearestWords("räakna"));
-        System.out.println(n.getNearestWords("duå"));
+        System.out.println(n.synonym("du"));
+        System.out.println(n.synonym("dö"));
+        System.out.println(n.synonym("räakna"));
+        System.out.println(n.synonym("duå"));
   
-    }    
+    } */  
 }

@@ -19,4 +19,12 @@ public class QuestionAnswer {
 		this.answer =  new ArrayList<SearchEntry>(answer);
 		this.id = id;
 	}
+	public String toString() {
+		String out = "";
+		for(int i = 0; i < answer.size(); i++) {
+			out += "Answer " +  i + "\n";
+			out += answer.get(i).text + "\n" + "\n";
+		}
+		return out;
+	}
 }

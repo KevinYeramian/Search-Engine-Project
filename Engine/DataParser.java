@@ -45,7 +45,7 @@ public class DataParser {
 			return;
 		}
 		
-		int sizeOption = 1000;
+		int sizeOption = 100000;
 		if (args.length > 1) {
 			sizeOption = Integer.parseInt(args[1]);
 		}
