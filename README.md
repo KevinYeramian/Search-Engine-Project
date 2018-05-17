@@ -30,10 +30,10 @@ Step 4:
 Installing Maven
 
 1.	Most Eclipse downloads include the Maven tooling already. If it is missing in your installation, you can install it via the main update of your release via Help ▸ Install New Software. The following listing contains the update site for the Neon release and an update site maintained by the m2e project.
-a.	Neon Update Site
-http://download.eclipse.org/releases/neon
-b.	M2e Update Site
-http://download.eclipse.org/technology/m2e/releases 
+
+    a.	Neon Update Site http://download.eclipse.org/releases/neon
+
+    b.	M2e Update Site http://download.eclipse.org/technology/m2e/releases 
 
 2.	By default, the Maven tooling does not download the Maven index for the Eclipse IDE. Via the Maven index you can search for dependencies, select them and add them to your pom file. To download the index, select Windows ▸ Preferences ▸ Maven and enable the Download repository index updates on startup option.
 
