@@ -27,7 +27,7 @@ public class SearchGUI extends JFrame {
     private Query query;
 
     /**  The results of a search query. */
-    ArrayList<QuestionAnswer> results;
+    ArrayList<Pair> results;
 
     /**  The query type (either intersection, phrase, or ranked). */
     QueryType queryType = QueryType.QUESTION;
@@ -228,9 +228,9 @@ public class SearchGUI extends JFrame {
         box = new JCheckBox[maxResultsToDisplay];
         int i;
         for ( i=0; i<results.size() && i<maxResultsToDisplay; i++ ) {
-            String description = i + " " + results.get(i).question.text;
+            String description = i + " " ;
             if ( queryType == QueryType.QUESTION ) {
-                description += "   " + String.format( "%.5f", 0.0 );
+                description += "   " + String.format( "%.15f",  results.get(i).value );
             }
             box[i] = new JCheckBox();
             box[i].setSelected( false );
@@ -247,7 +247,7 @@ public class SearchGUI extends JFrame {
                     String fileName = ((JLabel)e.getSource()).getText().split(" ")[0];
                     String contents = "Displaying contents of " + fileName + "\n" + MARKER + "\n";
                     String line;
-                    contents += results.get(Integer.parseInt(fileName)).toString();
+                    contents += results.get(Integer.parseInt(fileName)).key;
                     docTextView.setText(contents);
                     docTextView.setCaretPosition(0);
                 }
