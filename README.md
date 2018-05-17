@@ -22,11 +22,11 @@ Note: Make sure to set environment variable of JAVAHOME and add java bin path in
 
 1.	Open Eclipse and Create a project. Make a package in src with the name of Engine. Import the code from the code repository you have downloaded before from github.
 
-1.	Right Click on the Engine package of the newly created Eclipse project and click on import.
+    1.	Right Click on the Engine package of the newly created Eclipse project and click on import.
 
-2.	In the new window, select General -> File System and click on next.
+    2.	In the new window, select General -> File System and click on next.
 
-3.	In the new window, select the code folder named Engine that you have downloaded from Github and check on Engine so that all the files in the package got checked and click on finish. You’ll see all the java files in your project now.
+    3.	In the new window, select the code folder named Engine that you have downloaded from Github and check on Engine so that all the files in the package got checked and click on finish. You’ll see all the java files in your project now.
 
 ## Step 4: Installing Maven
 
