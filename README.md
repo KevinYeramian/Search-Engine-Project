@@ -50,7 +50,7 @@ Note: Make sure to set environment variable of JAVAHOME and add java bin path in
 
 5.	The new window will open after selecting Maven build. Write “clean verify” in the Goals textbox and run the build. Wait 1-2 mins for the project to build. After build being finished you’ll see “BUILD SUCCESS” in the console. 
 
-6.	Now right click on your Project ▸Build path ▸Add external archives. Go to your project directory in the explorer usually in the path *C:\Users\%username%\eclipse-workspace\%projectname%\target* and select *%Projectname%-1.0-SNAPSHOT-jar-with-dependencies* file. My project name is SearchEngine so the file is “SearchEngine-1.0-SNAPSHOT-jar-with-dependencies” and open. Refresh the project.
+6.	Now right click on your Project ▸Build path ▸Add external archives. Go to your project directory in the explorer usually in the path *C:\Users\%username%\eclipse-workspace\projectname\target* and select *%Projectname%-1.0-SNAPSHOT-jar-with-dependencies* file. My project name is SearchEngine so the file is “SearchEngine-1.0-SNAPSHOT-jar-with-dependencies” and open. Refresh the project.
 
 7.	Open w2vImpoter.java and change the variable path on line 40. Put the path of the word2vector unzipped folder you downloaded earlier. My files are in the project folder so the path is  String path = "C:\\Users\\username\\eclipse-workspace\\Search Engine";
 
