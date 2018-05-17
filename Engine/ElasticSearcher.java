@@ -113,16 +113,4 @@ public class ElasticSearcher implements ElasticSearchInterface {
 		return result;
 	}
 	
-	
-	// TODO: remove
-	/*
-	public static void main( String[] args ) {
-		
-		String str = args[0] + " " + args[1];
-		//situation svårt
-		Query q = new Query(str);
-		ArrayList<QuestionAnswer> res = new ElasticSearcher().search(q, 0.1, 10);
-		
-	}
-	*/
 }
