@@ -228,7 +228,7 @@ public class SearchGUI extends JFrame {
         box = new JCheckBox[maxResultsToDisplay];
         int i;
         for ( i=0; i<results.size() && i<maxResultsToDisplay; i++ ) {
-            String description = i + " " ;
+            String description = i + " Answers " + i + " " + results.get(i).key;
             if ( queryType == QueryType.QUESTION ) {
                 description += "   " + String.format( "%.15f",  results.get(i).value );
             }
