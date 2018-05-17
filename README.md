@@ -4,7 +4,9 @@ Final project : DD2476 Search Engines and Information Retrieval systems at KTH
 ## Step 1: Software Dependencies
 
 •	Eclipse: http://www.eclipse.org/downloads/ 
+
 •	Java Development kit: http://www.oracle.com/technetwork/java/javase/downloads/index.html 
+
 •	Elastic Search: https://www.elastic.co/downloads 
 Note: Make sure to set environment variable of JAVAHOME and add java bin path in the path variable
 
@@ -19,8 +21,11 @@ Note: Make sure to set environment variable of JAVAHOME and add java bin path in
 ## Step 3: Importing project
 
 1.	Open Eclipse and Create a project. Make a package in src with the name of Engine. Import the code from the code repository you have downloaded before from github.
+
 1.	Right Click on the Engine package of the newly created Eclipse project and click on import.
+
 2.	In the new window, select General -> File System and click on next.
+
 3.	In the new window, select the code folder named Engine that you have downloaded from Github and check on Engine so that all the files in the package got checked and click on finish. You’ll see all the java files in your project now.
 
 ## Step 4: Installing Maven
@@ -45,17 +50,17 @@ Note: Make sure to set environment variable of JAVAHOME and add java bin path in
 
 5.	The new window will open after selecting Maven build. Write “clean verify” in the Goals textbox and run the build. Wait 1-2 mins for the project to build. After build being finished you’ll see “BUILD SUCCESS” in the console. 
 
-6.	Now right click on your Project ▸Build path ▸Add external archives. Go to your project directory in the explorer usually in the path “C:\Users\*username*\eclipse-workspace\*projectname*\target” and select “*Projectname*-1.0-SNAPSHOT-jar-with-dependencies” file. My project name is SearchEngine so the file is “SearchEngine-1.0-SNAPSHOT-jar-with-dependencies” and open. Refresh the project.
+6.	Now right click on your Project ▸Build path ▸Add external archives. Go to your project directory in the explorer usually in the path *C:\Users\%username%\eclipse-workspace\%projectname%\target* and select *%Projectname%-1.0-SNAPSHOT-jar-with-dependencies* file. My project name is SearchEngine so the file is “SearchEngine-1.0-SNAPSHOT-jar-with-dependencies” and open. Refresh the project.
 
 7.	Open w2vImpoter.java and change the variable path on line 40. Put the path of the word2vector unzipped folder you downloaded earlier. My files are in the project folder so the path is  String path = "C:\\Users\\username\\eclipse-workspace\\Search Engine";
 
 ## Step 6: Set up the environment:
 
-1.	Copy “elasticsearch.yml” from the code directory (downloaded from git) and replace the same file in “%pathtoelasticsearch%\elasticsearch-6.2.4\config\elasticsearch.yml”.
+1.	Copy *elasticsearch.yml* from the code directory (downloaded from git) and replace the same file in *%pathtoelasticsearch%\elasticsearch-6.2.4\config\elasticsearch.yml*.
 
-2.	Open command prompt/power shell in Elastic search folder and run elastic search by typing “.\bin\elasticsearch.bat”.
+2.	Open command prompt/power shell in Elastic search folder and run elastic search by typing *.\bin\elasticsearch.bat*.
 
-3.	Open DataParser.java file and open it’s Run Configurations by clicking on down arrow along with green play button. Click on the arguments tab, write (in the Program Arguments) data folder path (downloaded from bitbucket) give space and write 100000/10000/1000 (as we have 3 data files so this argument is the file number). For example, “C:\Users\%username%\Downloads\IR_Project\data 100000”. Click on run button. This will create a Json file in the project directory.
+3.	Open DataParser.java file and open it’s Run Configurations by clicking on down arrow along with green play button. Click on the arguments tab, write (in the Program Arguments) data folder path (downloaded from bitbucket) give space and write 100000/10000/1000 (as we have 3 data files so this argument is the file number). For example, *C:\Users\%username%\Downloads\IR_Project\data 100000*. Click on run button. This will create a Json file in the project directory.
 
 ## Step 7: Run the project:
 
