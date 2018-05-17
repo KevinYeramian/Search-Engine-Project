@@ -61,7 +61,7 @@ public class w2vImporter implements Word2VecInterface {
         String toReturn = token.replaceAll( "å","aaa");
         toReturn = toReturn.replaceAll("ä","eae");
         toReturn = toReturn.replaceAll("ö","eoe");
-        System.out.println("2 w2v, from "+ token + " to " +toReturn );
+        //System.out.println("2 w2v, from "+ token + " to " +toReturn );
         return toReturn;
     }
     
@@ -69,12 +69,12 @@ public class w2vImporter implements Word2VecInterface {
         String toReturn = token.replaceAll("aaa", "å");
         toReturn = toReturn.replaceAll("eae", "ä");
         toReturn = toReturn.replaceAll("eoe", "ö");
-        System.out.println("2 query, from "+ token + " to " +toReturn );
+        //System.out.println("2 query, from "+ token + " to " +toReturn );
         return toReturn;
     }
     public ArrayList<Pair> synonym(String token){
-        double threshold = 0.9;//change if you want
-        int numberOfWords = 20;//change if you want 
+        double threshold = 0.6;//change if you want
+        int numberOfWords = 5;//change if you want 
         //needs to deal with åäö
         String tokenBuffer = this.translate2W2v(token);
         
@@ -87,10 +87,14 @@ public class w2vImporter implements Word2VecInterface {
         
         for(String word : words){
             double sim = this.word2Vec.similarity(word, tokenBuffer);
-            if(sim >= threshold || debugging){
+            if(sim >= threshold){
+            	System.out.println("Synonym of " + token + " = " + word);
                 //needs to deal with åäö
                 String translated = translate2Query(word);
-                results.add(new Pair(translated, sim));
+                results.add(new Pair(translated, sim / 2.0));
+            }
+            if(results.size() == numberOfWords) {
+            	break;
             }
         }
         
