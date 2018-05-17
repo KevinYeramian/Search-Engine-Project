@@ -73,7 +73,7 @@ public class ElasticSearcher implements ElasticSearchInterface {
 		    		.put("bool", new JSONObject()
 		    			.put("should", shouldList)));
 		    
-		    StringEntity params = new StringEntity(body.toString());
+		    StringEntity params = new StringEntity(body.toString(), "UTF-8");
 		    request.setEntity(params);
 		    HttpResponse response = getHttpClient().execute(request);
 		    HttpEntity entity = response.getEntity();
